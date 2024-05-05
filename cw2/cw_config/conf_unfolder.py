@@ -190,8 +190,9 @@ def unroll_exp_reps(exp_configs: List[dict]) -> List[dict]:
         if KEY.i_REP_IDX in config:
             unrolled_exps.append(config)
             continue
-
-        for r in range(config[KEY.REPS]):
+        if isinstance(config[KEY.REPS], int):
+            config[KEY.REPS] = [i for i in range(config[KEY.REPS])]
+        for r in config[KEY.REPS]:
             c = deepcopy(config)
             c[KEY.i_REP_IDX] = r
             c[KEY.i_REP_LOG_PATH] = os.path.join(
